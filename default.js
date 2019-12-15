@@ -1,6 +1,7 @@
 (function ($) {
 	var arr = [];
 	var index = 0;
+	
 	 this.createElement = function (elementType, className) {
         var element = document.createElement(elementType);
 
@@ -62,6 +63,21 @@
 				if(key != "child" && key != "childs"){
 					var rowItemElement = createElement("td");
 					rowItemElement.textContent = value;
+					if(key == "tckn"){
+						rowItemElement.style.cssText="text-decoration:underline";
+						rowItemElement.setAttribute("data-info", JSON.stringify(rowItem[i]));
+						rowItemElement.setAttribute("data-type", "tckn");
+						rowItemElement.setAttribute("data-toggle","modal");
+						rowItemElement.setAttribute("data-target","#exampleModal");
+					}
+					else if (key == "phone"){
+						rowItemElement.style.cssText="text-decoration:underline";
+						rowItemElement.setAttribute("data-info", JSON.stringify(rowItem[i]));
+						rowItemElement.setAttribute("data-type", "phone");
+						rowItemElement.setAttribute("data-toggle","modal");
+					    rowItemElement.setAttribute("data-target","#exampleModal");
+					}
+					
 					rowTrContainer.append(rowItemElement);
 				}
                 
@@ -75,6 +91,28 @@
 		return arr;
 	}
 	
+    $( document ).ready(function() {
+        $('#exampleModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) 
+            var recipient = button.data('info') 
+            var type = button.data('type') 
+            if(type == "tckn")
+            { 
+                $("#tckndiv").show();
+                $("#namediv").show();
+                document.getElementById("namevalue").textContent = recipient.name;
+                document.getElementById("tcknvalue").textContent = recipient.tckn;
+                document.getElementById("phonevalue").textContent = recipient.phone;
+            }
+            else{
+                document.getElementById("phonevalue").textContent = recipient.phone;
+                $("#tckndiv").hide();
+                $("#namediv").hide();
+                
+            }
+            
+		  })
+    });
     $.fn.tableCreater = function (data) {
 		
 		var columns = data.columns;
